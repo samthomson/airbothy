@@ -16,14 +16,21 @@
 
 <div class="container-fluid">
     <div class="col-xs-6">
-        <sebm-google-map
-            [latitude]="lat"
-            [longitude]="lng"
-            (centerChange)="onHandle($event)">
-            >
-        </sebm-google-map>
+
+        <app-map (boundsChanged)="OnBoundsChanged($event)"></app-map>
+
+        <a (click)="clickLat()">click lat</a>
     </div>
     <div class="col-xs-6">
-        results: {{this.iQueryLocation.lat}}, {{this.iQueryLocation.lng}}
+        results: {{bounds | json}}
+        {{nelat}}
+        <div id="bothy-results">
+            <div *ngFor="let bothy of aResults">
+                {{bothy.name}}
+            </div>
+        </div>
+        <div id="results-info">
+            <span *ngIf="iResults > 0">{{iResults}}</span>
+        </div>
     </div>
 </div>

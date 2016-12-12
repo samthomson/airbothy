@@ -6,10 +6,14 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
+import { MapComponent } from './map/map.component';
+
+import { BothyService } from './services/bothy.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +23,7 @@ import { AgmCoreModule } from 'angular2-google-maps/core';
       apiKey: 'AIzaSyDR4kOXozjam-Y3xaMxq9mSABoJxHzsXhM'
   })
   ],
-  providers: [],
+  providers: [BothyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
