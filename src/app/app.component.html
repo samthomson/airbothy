@@ -22,7 +22,7 @@
     </div>
     <div class="col-xs-6">
         <div id="bothy-results">
-            <div *ngFor="let bothy of aResults; let iResult = index;" class="bothy-result">
+            <div *ngFor="let bothy of aResults; let iResult = index;" class="bothy-result link" (click)="viewBothy(iResult)">
                 <img [src]="bothyPic(iResult)" >
                 <br>
                 {{bothy.name}}
@@ -33,3 +33,26 @@
         </div>
     </div>
 </div>
+
+
+<modal
+    #bothyModal
+>
+    <modal-header [show-close]="false">
+        <h4 class="modal-title" *ngIf="iSelected !== null">{{oSelectedBothy.name}}</h4>
+    </modal-header>
+    <modal-body>
+        <div *ngIf="iSelected !== null">
+            <div>
+                <img [src]="bothyPic(iSelected)" id="modal-bothy-pic" >
+            </div>
+            {{oSelectedBothy.region}} - {{oSelectedBothy.gridref}}<br>
+            <p>{{oSelectedBothy?.description}}</p><br>
+            {{oSelectedBothy?.latitude}}, {{oSelectedBothy?.longitude}}<br>
+            <div *ngFor="let thumb of allBothyPics(iSelected);">
+                <img [src]="thumb" class="modal-thumb">
+            </div>
+        </div>
+    </modal-body>
+    <modal-footer [show-default-buttons]="true"></modal-footer>
+</modal>

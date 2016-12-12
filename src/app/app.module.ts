@@ -10,6 +10,8 @@ import { MapComponent } from './map/map.component';
 
 import { BothyService } from './services/bothy.service';
 
+import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +23,8 @@ import { BothyService } from './services/bothy.service';
     HttpModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyDR4kOXozjam-Y3xaMxq9mSABoJxHzsXhM'
-  })
+    }),
+    Ng2Bs3ModalModule
   ],
   providers: [BothyService],
   bootstrap: [AppComponent]

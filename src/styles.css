@@ -26,3 +26,19 @@
     width:auto;
     max-width: 140px;
 }
+
+img#modal-bothy-pic{
+    max-height: 400px;
+    width:auto;
+    max-width: 100%;
+    height: auto;
+}
+
+img.modal-thumb {
+    max-height: 100px;
+    width:auto;
+    max-width: 100%;
+    height: auto;
+    display: inline-block;
+    margin: 0 8 8 0;
+}
