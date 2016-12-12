@@ -44,4 +44,8 @@ export class AppComponent {
         console.log(this.iResults + " results");
     }
 
+    bothyPic(iResult) {
+        return 'http://www.mountainbothies.org.uk/' + this.aResults[iResult].images.split(',')[0];
+    }
+
 }

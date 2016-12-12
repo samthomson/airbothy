@@ -1,8 +1,11 @@
 import {
     Component,
     OnInit,
+    OnChanges,
+    SimpleChange,
     ViewChild,
     ElementRef,
+    Input,
     Output,
     EventEmitter
 } from '@angular/core';
@@ -14,7 +17,7 @@ declare var google;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnChanges {
 
     lat: number = 56.93;
     lng: number = -4.23;
@@ -27,10 +30,52 @@ export class MapComponent implements OnInit {
     apiKey: string = 'AIzaSyDR4kOXozjam-Y3xaMxq9mSABoJxHzsXhM';
 
     bounds: any;
+    @Input() markerResults = null;
+    markers = [];
 
     ngOnInit() {
         this.loadGoogleMaps();
     }
+    ngOnChanges(changes: SimpleChange) {
+        // changes.prop contains the old and the new value...
+        console.log('ngOnChanges = ', changes['markerResults']);
+
+        // remove any previous markers
+        for (var i = 0; i < this.markers.length; i++) {
+            this.markers[i].setMap(this.map);
+        }
+        this.markers = [];
+
+        if(typeof(this.markerResults) !== 'undefined')
+        {
+            for(let iMarker = 0; iMarker < this.markerResults.length; iMarker++)
+            {
+                if(
+                    this.isNumeric(this.markerResults[iMarker].latitude)
+                    &&
+                    this.isNumeric(this.markerResults[iMarker].longitude)
+                ) {
+                    let bothyLatLng = new google.maps.LatLng(
+                        this.markerResults[iMarker].latitude,
+                        this.markerResults[iMarker].longitude
+                    );
+                    let marker = new google.maps.Marker({
+                        position: bothyLatLng,
+                        map: this.map,
+                        title: this.markerResults[iMarker].name
+                    });
+                    this.markers.push(marker);
+                }else{
+                    console.log(this.markerResults[iMarker].name + " was not numeric");
+                }
+            }
+        }
+
+    }
+    isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
     mapupdater = null;
     initMap() {
         this.mapInitialised = true;

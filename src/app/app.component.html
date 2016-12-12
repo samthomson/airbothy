@@ -17,20 +17,19 @@
 <div class="container-fluid">
     <div class="col-xs-6">
 
-        <app-map (boundsChanged)="OnBoundsChanged($event)"></app-map>
-
-        <a (click)="clickLat()">click lat</a>
+        <app-map
+        [markerResults]="aResults" (boundsChanged)="OnBoundsChanged($event)"></app-map>
     </div>
     <div class="col-xs-6">
-        results: {{bounds | json}}
-        {{nelat}}
         <div id="bothy-results">
-            <div *ngFor="let bothy of aResults">
+            <div *ngFor="let bothy of aResults; let iResult = index;" class="bothy-result">
+                <img [src]="bothyPic(iResult)" >
+                <br>
                 {{bothy.name}}
             </div>
         </div>
         <div id="results-info">
-            <span *ngIf="iResults > 0">{{iResults}}</span>
+            <span *ngIf="iResults == 0">no results</span>
         </div>
     </div>
 </div>
