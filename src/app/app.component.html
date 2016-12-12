@@ -49,8 +49,10 @@
             {{oSelectedBothy.region}} - {{oSelectedBothy.gridref}}<br>
             <p>{{oSelectedBothy?.description}}</p><br>
             {{oSelectedBothy?.latitude}}, {{oSelectedBothy?.longitude}}<br>
-            <div *ngFor="let thumb of allBothyPics(iSelected);">
-                <img [src]="thumb" class="modal-thumb">
+            <div class="clearfix">
+                <div *ngFor="let thumb of allBothyPics(iSelected);">
+                    <img [src]="thumb" class="modal-thumb">
+                </div>
             </div>
         </div>
     </modal-body>

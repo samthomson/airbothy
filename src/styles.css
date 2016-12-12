@@ -40,5 +40,11 @@ img.modal-thumb {
     max-width: 100%;
     height: auto;
     display: inline-block;
-    margin: 0 8 8 0;
+    float: left;
+    margin: 0px 8px 8px 0px;
+}
+
+.clearfix {
+    overflow: auto;
+    zoom: 1;
 }
