@@ -18,7 +18,10 @@
     <div class="col-xs-6">
         <app-map
         [markerResults]="aResults"
-        (boundsChanged)="onBoundsChanged($event)" (idle)="onMapIdle($event)"></app-map>
+        (boundsChanged)="onBoundsChanged($event)"
+        (idle)="onMapIdle($event)"
+        (markerClick)=onMarkerClick($event)
+        ></app-map>
     </div>
     <div class="col-xs-6">
         <div id="bothy-results">

@@ -24,6 +24,7 @@ export class MapComponent implements OnInit, OnChanges {
 
     @Output() boundsChanged = new EventEmitter();
     @Output() idle = new EventEmitter();
+    @Output() markerClick = new EventEmitter();
 
     @ViewChild('map') mapElement: ElementRef;
     map: any;
@@ -61,14 +62,27 @@ export class MapComponent implements OnInit, OnChanges {
                     let marker = new google.maps.Marker({
                         position: bothyLatLng,
                         map: this.map,
-                        title: this.markerResults[iMarker].name
+                        title: this.markerResults[iMarker].name,
+                        clickRef: iMarker
+                    });
+                    marker.addListener('click', () => {
+                        //console.log(this.clickRef);
+                        this.markerClick.emit(marker.clickRef
+                        );
                     });
                     this.markers.push(marker);
                 }
             }
         }
-
     }
+
+    proxyMarkerClick(iMarkerClick)
+    {
+        this.markerClick.emit({
+            value: iMarkerClick
+        });
+    }
+
     isNumeric(n) {
         return !isNaN(parseFloat(n)) && isFinite(n);
     }
@@ -139,20 +153,6 @@ export class MapComponent implements OnInit, OnChanges {
         });
     }
 
-
-    addMarker(){
-
-        let marker = new google.maps.Marker({
-            map: this.map,
-            animation: google.maps.Animation.DROP,
-            position: this.map.getCenter()
-        });
-
-        let content = "<h4>Information!</h4>";
-
-        this.addInfoWindow(marker, content);
-
-    }
 
     addInfoWindow(marker, content){
 

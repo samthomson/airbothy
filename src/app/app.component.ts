@@ -60,6 +60,12 @@ export class AppComponent implements OnInit{
         this.aResults = this.bothyService.search(this.bounds);
         this.iResults = this.aResults.length;
     }
+
+    onMarkerClick(iClickedId)
+    {
+        this.onViewBothy(iClickedId);
+    }
+
     onModalClose()
     {
         this.iSelected = null;
