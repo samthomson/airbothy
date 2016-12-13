@@ -14,8 +14,8 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="container-fluid">
-    <div class="col-xs-6">
+<div class="container-fluid" id="map-thumbs-container">
+    <div id="map-half" class="halfs">
         <app-map
         [markerResults]="aResults"
         (boundsChanged)="onBoundsChanged($event)"
@@ -23,7 +23,7 @@
         (markerClick)=onMarkerClick($event)
         ></app-map>
     </div>
-    <div class="col-xs-6">
+    <div id="thumbs-half" class="halfs">
         <div id="bothy-results">
             <div *ngFor="let bothy of aResults; let iResultIndex = index;" class="bothy-result link" (click)="onViewBothy(iResultIndex)">
                 <img [src]="bothyPic(iResultIndex)" >
