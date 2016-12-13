@@ -10,6 +10,9 @@ $iMargin: 8px;
 /*
 //  1    RESETS
 */
+#bothy-modal-footer .btn-default {
+    display: none !important;
+}
 
 /*
 //  2    HELPERS
