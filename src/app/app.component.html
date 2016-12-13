@@ -49,15 +49,15 @@
     <modal-body>
         <div *ngIf="iSelected != null">
             <div>
-                <img [src]="bothyPic(iSelected)" id="modal-bothy-pic" >
+                <img [src]="sMainModalImage" id="modal-bothy-pic" >
             </div>
             {{aResults[iSelected].region}} - {{aResults[iSelected].gridref}}<br>
             <p>{{aResults[iSelected].description}}</p><br>
             {{aResults[iSelected].latitude}}, {{aResults[iSelected].longitude}}<br>
             <div class="clearfix">
-                <div *ngFor="let thumb of allBothyPics(iSelected);">
+                <a class="link" *ngFor="let thumb of allBothyPics(iSelected); let i = index;" (click)="setMainBothyModalPic(i)">
                     <img [src]="thumb" class="modal-thumb">
-                </div>
+                </a>
             </div>
         </div>
     </modal-body>

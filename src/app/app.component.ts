@@ -28,6 +28,8 @@ export class AppComponent implements OnInit{
 
     oSelectedBothy: Bothy = null;
     iSelected: number = null;
+    iSmallImageIndexSelected: number = 0;
+    sMainModalImage: string;
 
     @Input() bounds: any;
 
@@ -48,8 +50,7 @@ export class AppComponent implements OnInit{
 
         this.ref.detectChanges();
 
-        this.aResults = this.bothyService.search(this.bounds);
-        this.iResults = this.aResults.length;
+        this.doSearchFromBounds();
     }
     onMapIdle(oRestingBounds)
     {
@@ -57,8 +58,8 @@ export class AppComponent implements OnInit{
 
         this.ref.detectChanges();
 
-        this.aResults = this.bothyService.search(this.bounds);
-        this.iResults = this.aResults.length;
+        this.doSearchFromBounds();
+
     }
 
     onMarkerClick(iClickedId)
@@ -69,20 +70,43 @@ export class AppComponent implements OnInit{
     onModalClose()
     {
         this.iSelected = null;
+        this.iSmallImageIndexSelected = 0;
     }
 
-    onViewBothy(iResultId) {
+    onViewBothy(iResultId)
+    {
         // open modal and display pics and info on bothy
-        //this.oSelectedBothy = this.aResults[iResultId];
-        //console.log(this.oSelectedBothy);
         this.iSelected = iResultId;
+        this.setMainBothyModalPic(0);
         // force an update, since this event doesn't instantly trigger the renderers onchange detection
         this.ref.detectChanges();
         this.bothyModal.open();
     }
 
-    bothyPic(iResult) {
-        return 'http://www.mountainbothies.org.uk/' + this.aResults[iResult].images.split(',')[0];
+    onSmallPicClick(iIndex)
+    {
+        this.setMainBothyModalPic(iIndex);
+        // set as main pic in bothy
+        this.iSmallImageIndexSelected = iIndex;
+    }
+
+    setMainBothyModalPic(iIndex)
+    {
+        this.sMainModalImage = this.bothyPic(this.iSelected, iIndex);
+        this.ref.detectChanges();
+    }
+
+    doSearchFromBounds() {
+        this.aResults = this.bothyService.search(this.bounds);
+        this.iResults = this.aResults.length;
+    }
+
+    bothyPic(iResult, iIndex) {
+        if(typeof(iIndex) === 'undefined')
+        {
+            iIndex = 0;
+        }
+        return 'http://www.mountainbothies.org.uk/' + this.aResults[iResult].images.split(',')[iIndex];
     }
     allBothyPics(iResult) {
         let aURLs = [];
