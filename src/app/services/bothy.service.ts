@@ -29,7 +29,6 @@ export class BothyService {
                     aReturn.push(this.aBothies[iBothy]);
                 }
             }
-
         }
         return aReturn;
     }

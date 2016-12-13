@@ -21,15 +21,15 @@ import { Ng2Bs3ModalModule } from 'ng2-bs3-modal/ng2-bs3-modal';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
 
     iResults: number = 0;
-    aResults: Bothy[];
+    aResults: Bothy[] = [];
 
     oSelectedBothy: Bothy = null;
-    iSelected = null;
+    iSelected: number = null;
 
-    @Input() bounds: any = null;
+    @Input() bounds: any;
 
     @ViewChild('bothyModal') bothyModal:any;
 
@@ -38,16 +38,41 @@ export class AppComponent {
         private bothyService: BothyService
     ){}
 
-    OnBoundsChanged(newBounds)
+    ngOnInit() {
+    }
+
+    onBoundsChanged(oNewBounds)
     {
-        console.log("Bounds changed, search");
-        this.bounds = newBounds.value;
+        // map bounds changed - search on bothies
+        this.bounds = oNewBounds.value;
 
         this.ref.detectChanges();
 
         this.aResults = this.bothyService.search(this.bounds);
         this.iResults = this.aResults.length;
-        console.log(this.iResults + " results");
+    }
+    onMapIdle(oRestingBounds)
+    {
+        this.bounds = oRestingBounds.value;
+
+        this.ref.detectChanges();
+
+        this.aResults = this.bothyService.search(this.bounds);
+        this.iResults = this.aResults.length;
+    }
+    onModalClose()
+    {
+        this.iSelected = null;
+    }
+
+    onViewBothy(iResultId) {
+        // open modal and display pics and info on bothy
+        //this.oSelectedBothy = this.aResults[iResultId];
+        //console.log(this.oSelectedBothy);
+        this.iSelected = iResultId;
+        // force an update, since this event doesn't instantly trigger the renderers onchange detection
+        this.ref.detectChanges();
+        this.bothyModal.open();
     }
 
     bothyPic(iResult) {
@@ -60,15 +85,6 @@ export class AppComponent {
             aURLs.push('http://www.mountainbothies.org.uk/' + this.aResults[iResult].images.split(',')[iURL]);
         }
         return aURLs;
-    }
-
-    viewBothy(iResultId) {
-        // open modal and display pics and info on bothy
-        console.log("selected bothy: " + iResultId);
-        this.oSelectedBothy = this.aResults[iResultId];
-        console.log(this.oSelectedBothy);
-        this.iSelected = iResultId;
-        this.bothyModal.open();
     }
 
 }

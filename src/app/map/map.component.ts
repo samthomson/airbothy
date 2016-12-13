@@ -2,7 +2,7 @@ import {
     Component,
     OnInit,
     OnChanges,
-    SimpleChange,
+    SimpleChanges,
     ViewChild,
     ElementRef,
     Input,
@@ -23,6 +23,7 @@ export class MapComponent implements OnInit, OnChanges {
     lng: number = -4.23;
 
     @Output() boundsChanged = new EventEmitter();
+    @Output() idle = new EventEmitter();
 
     @ViewChild('map') mapElement: ElementRef;
     map: any;
@@ -36,10 +37,8 @@ export class MapComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.loadGoogleMaps();
     }
-    ngOnChanges(changes: SimpleChange) {
+    ngOnChanges(changes: SimpleChanges) {
         // changes.prop contains the old and the new value...
-        console.log('ngOnChanges = ', changes['markerResults']);
-
         // remove any previous markers
         for (var i = 0; i < this.markers.length; i++) {
             this.markers[i].setMap(this.map);
@@ -65,8 +64,6 @@ export class MapComponent implements OnInit, OnChanges {
                         title: this.markerResults[iMarker].name
                     });
                     this.markers.push(marker);
-                }else{
-                    console.log(this.markerResults[iMarker].name + " was not numeric");
                 }
             }
         }
@@ -77,6 +74,7 @@ export class MapComponent implements OnInit, OnChanges {
     }
 
     mapupdater = null;
+
     initMap() {
         this.mapInitialised = true;
 
@@ -90,6 +88,9 @@ export class MapComponent implements OnInit, OnChanges {
         this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
 
+        //
+        // bounds changed event registration
+        //
         google.maps.event.addListener(this.map, 'bounds_changed', () => {
 
             clearTimeout(this.mapupdater);
@@ -113,6 +114,28 @@ export class MapComponent implements OnInit, OnChanges {
 
             }, 500);
 
+        });
+
+        //
+        // map idle event registration
+        //
+        google.maps.event.addListener(this.map, 'idle', () => {
+
+            let mBounds = this.map.getBounds();
+
+            this.bounds = {
+                northEast: {
+                    lat: mBounds.getNorthEast().lat(),
+                    lng: mBounds.getNorthEast().lng()
+                },
+                southWest: {
+                    lat: mBounds.getSouthWest().lat(),
+                    lng: mBounds.getSouthWest().lng()
+                }
+            };
+            this.idle.emit({
+                value: this.bounds
+            });
         });
     }
 
@@ -146,11 +169,8 @@ export class MapComponent implements OnInit, OnChanges {
 
     loadGoogleMaps()
     {
-
         if(typeof google == "undefined" || typeof google.maps == "undefined")
         {
-            console.log("online, loading map");
-
             //Load the SDK
             window['mapInit'] = () => {
                 this.initMap();

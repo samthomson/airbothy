@@ -16,14 +16,14 @@
 
 <div class="container-fluid">
     <div class="col-xs-6">
-
         <app-map
-        [markerResults]="aResults" (boundsChanged)="OnBoundsChanged($event)"></app-map>
+        [markerResults]="aResults"
+        (boundsChanged)="onBoundsChanged($event)" (idle)="onMapIdle($event)"></app-map>
     </div>
     <div class="col-xs-6">
         <div id="bothy-results">
-            <div *ngFor="let bothy of aResults; let iResult = index;" class="bothy-result link" (click)="viewBothy(iResult)">
-                <img [src]="bothyPic(iResult)" >
+            <div *ngFor="let bothy of aResults; let iResultIndex = index;" class="bothy-result link" (click)="onViewBothy(iResultIndex)">
+                <img [src]="bothyPic(iResultIndex)" >
                 <br>
                 {{bothy.name}}
             </div>
@@ -37,18 +37,20 @@
 
 <modal
     #bothyModal
->
+    (onClose)="onModalClose()"
+    (onDismiss)="onModalClose()"
+    >
     <modal-header [show-close]="false">
-        <h4 class="modal-title" *ngIf="iSelected !== null">{{oSelectedBothy.name}}</h4>
+        <h4 class="modal-title" *ngIf="iSelected != null">{{aResults[iSelected].name}}</h4>
     </modal-header>
     <modal-body>
-        <div *ngIf="iSelected !== null">
+        <div *ngIf="iSelected != null">
             <div>
                 <img [src]="bothyPic(iSelected)" id="modal-bothy-pic" >
             </div>
-            {{oSelectedBothy.region}} - {{oSelectedBothy.gridref}}<br>
-            <p>{{oSelectedBothy?.description}}</p><br>
-            {{oSelectedBothy?.latitude}}, {{oSelectedBothy?.longitude}}<br>
+            {{aResults[iSelected].region}} - {{aResults[iSelected].gridref}}<br>
+            <p>{{aResults[iSelected].description}}</p><br>
+            {{aResults[iSelected].latitude}}, {{aResults[iSelected].longitude}}<br>
             <div class="clearfix">
                 <div *ngFor="let thumb of allBothyPics(iSelected);">
                     <img [src]="thumb" class="modal-thumb">
