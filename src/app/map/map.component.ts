@@ -40,8 +40,8 @@ export class MapComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges) {
         // changes.prop contains the old and the new value...
         // remove any previous markers
-        for (var i = 0; i < this.markers.length; i++) {
-            this.markers[i].setMap(this.map);
+        for (let i = 0; i < this.markers.length; i++) {
+            this.markers[i].setMap(null);
         }
         this.markers = [];
 
@@ -65,7 +65,7 @@ export class MapComponent implements OnInit, OnChanges {
                         clickRef: iMarker
                     });
                     marker.addListener('click', () => {
-                        //console.log(this.clickRef);
+                        console.log("clickRef: " + marker.clickRef);
                         this.markerClick.emit(marker.clickRef
                         );
                     });
@@ -151,7 +151,6 @@ export class MapComponent implements OnInit, OnChanges {
             });
         });
     }
-
 
     addInfoWindow(marker, content){
 

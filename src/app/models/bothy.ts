@@ -13,9 +13,6 @@ export class Bothy {
     ) {}
 
     within(jGeoBounds) : boolean {
-
-        
-
         return false;
     }
 }

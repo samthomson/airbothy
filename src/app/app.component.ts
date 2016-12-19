@@ -61,25 +61,38 @@ export class AppComponent implements OnInit{
 
     }
 
-    onMarkerClick(iClickedId)
+    onMarkerClick(iClickedIndex)
     {
-        this.onViewBothy(iClickedId);
+        this.onViewBothy(iClickedIndex);
     }
 
     onModalClose()
     {
+        //this.bothyModal.close();
         this.iSelected = null;
         this.iSmallImageIndexSelected = 0;
     }
-
-    onViewBothy(iResultId)
+    onModalClickClose()
     {
+        this.bothyModal.dismiss();
+    }
+
+    onViewBothy(iResultIndex)
+    {
+        //console.log(iResultIndex);
         // open modal and display pics and info on bothy
-        this.iSelected = iResultId;
-        this.setMainBothyModalPic(0);
-        // force an update, since this event doesn't instantly trigger the renderers onchange detection
-        this.ref.detectChanges();
-        this.bothyModal.open();
+
+        if(iResultIndex < this.aResults.length)
+        {
+            this.iSelected = iResultIndex;
+            this.setMainBothyModalPic(0);
+            // force an update, since this event doesn't instantly trigger the renderers onchange detection
+            this.ref.detectChanges();
+            this.bothyModal.open();
+        } else {
+            alert("problem opening that bothy, try clicking the picture");
+            //console.log("\nERROR: out of bounds\n");
+        }
     }
 
     onSmallPicClick(iIndex)
@@ -105,7 +118,11 @@ export class AppComponent implements OnInit{
         {
             iIndex = 0;
         }
-        return 'http://www.mountainbothies.org.uk/' + this.aResults[iResult].images.split(',')[iIndex];
+        if(typeof(this.aResults[iResult]) !== 'undefined' && typeof(this.aResults[iResult].images) !== 'undefined' && this.aResults[iResult].images.length === 0) {
+            return '';
+        } else {
+            return 'http://www.mountainbothies.org.uk/' + this.aResults[iResult].images.split(',')[iIndex];
+        }
     }
     allBothyPics(iResult) {
         let aURLs = [];
